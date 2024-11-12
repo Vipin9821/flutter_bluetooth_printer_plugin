@@ -126,9 +126,9 @@ class FlutterBluetoothPrinter {
 
       final printResult = PrintBluetoothThermal.writeBytes(
         [
-          ...reset,
+          // ...reset,
           ...imageData,
-          ...reset,
+          // ...reset,
           // ...additional,
         ],
       );

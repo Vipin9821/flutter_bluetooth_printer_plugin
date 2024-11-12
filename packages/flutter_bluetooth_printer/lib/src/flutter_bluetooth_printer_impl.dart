@@ -124,16 +124,33 @@ class FlutterBluetoothPrinter {
       //   for (int i = 0; i < addFeeds; i++) ...Commands.lineFeed,
       // ];
 
-      final printResult = PrintBluetoothThermal.writeBytes(
+      await PrintBluetoothThermal.writeBytes(
         [
-          // ...reset,
-          ...[0x1B, 0x40, 0x1B, 0x3D, 0x01],
-          ...imageData,
-          // ...reset,
+          ...reset,
+          ...cBeep.codeUnits,
+
+          ...'****TESTING HARDWARE COMPATIBILITY ****'.codeUnits,
+          // ...imageData,
+          ...cBeep.codeUnits,
+          ...cBeep.codeUnits,
+          ...reset,
           // ...additional,
         ],
       );
 
+      await Future.delayed(const Duration(milliseconds: 900));
+      final printResult = await PrintBluetoothThermal.writeBytes(
+        [
+          ...reset,
+          ...cBeep.codeUnits,
+
+          ...imageData,
+          ...cBeep.codeUnits,
+          ...cBeep.codeUnits,
+          ...reset,
+          // ...additional,
+        ],
+      );
       // final printResult = await printBytes(
       //   keepConnected: true,
       //   address: address,

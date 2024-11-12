@@ -105,36 +105,55 @@ class FlutterBluetoothPrinter {
         useImageRaster: useImageRaster,
       );
 
-      await _initialize(
-        address: address,
+      // await _initialize(
+      //   address: address,
+      // );
+
+      final success = await PrintBluetoothThermal.connect(
+        macPrinterAddress: address,
       );
+
+      if (!success) {
+        return false;
+      }
 
       // waiting for printer initialized and buffers cleared
       await Future.delayed(const Duration(milliseconds: 400));
 
-      final additional = <int>[
-        for (int i = 0; i < addFeeds; i++) ...Commands.lineFeed,
-      ];
+      // final additional = <int>[
+      //   for (int i = 0; i < addFeeds; i++) ...Commands.lineFeed,
+      // ];
 
-      final printResult = await printBytes(
-        keepConnected: true,
-        address: address,
-        data: Uint8List.fromList([
+      final printResult = PrintBluetoothThermal.writeBytes(
+        [
+          ...reset,
           ...imageData,
           ...reset,
-          ...additional,
-        ]),
-        onProgress: onProgress,
-        maxBufferSize: maxBufferSize,
-        delayTime: delayTime,
+          // ...additional,
+        ],
       );
+
+      // final printResult = await printBytes(
+      //   keepConnected: true,
+      //   address: address,
+      //   data: Uint8List.fromList([
+      //     ...reset,
+      //     ...imageData,
+      //     ...reset,
+      //     // ...additional,
+      //   ]),
+      //   onProgress: onProgress,
+      //   maxBufferSize: maxBufferSize,
+      //   delayTime: delayTime,
+      // );
 
       return printResult;
     } catch (e) {
       return false;
     } finally {
       if (!keepConnected) {
-        await disconnect(address);
+        await PrintBluetoothThermal.disconnect;
+        // await disconnect(address);
       }
     }
   }

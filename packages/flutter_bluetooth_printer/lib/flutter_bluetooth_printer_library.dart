@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_printer_platform_interface/flutter_bluetooth_printer_platform_interface.dart';
 import 'package:image/image.dart' as img;
 import 'package:image/image.dart' hide Image, Color;
+import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 
 part 'src/capabilities.dart';
 part 'src/commands.dart';
